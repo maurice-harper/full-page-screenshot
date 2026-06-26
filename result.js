@@ -66,17 +66,13 @@ function download(blobOrUrl, filename) {
   if (blobOrUrl instanceof Blob) setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 
-function loadImage() {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = shot.dataUrl;
-  });
-}
-
 async function toCanvas() {
-  const img = await loadImage();
+  const img = await new Promise((resolve, reject) => {
+    const i = new Image();
+    i.onload = () => resolve(i);
+    i.onerror = reject;
+    i.src = shot.dataUrl;
+  });
   const canvas = document.createElement("canvas");
   canvas.width = shot.width;
   canvas.height = shot.height;
